@@ -9,11 +9,11 @@ module.exports = class BadgeGenerator {
       decimals: 0,
       radius: 8,
       borderWidth: 0,
-      borderColor: "rgba(0,0,0, 0.16)",
-      shadowBlur: 1,
+      borderColor: "transparent",
+      shadowBlur: 0,
       shadowOffestX: 0,
-      shadowOffestY: 1,
-      shadowColor: "rgba(0,0,0, 0.20)",
+      shadowOffestY: 0,
+      shadowColor: "transparent",
     };
     this.win = win;
     this.style = Object.assign(defaultStyle, opts);
