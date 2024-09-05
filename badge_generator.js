@@ -20,7 +20,10 @@ module.exports = class BadgeGenerator {
   }
 
   generate(number) {
-    const opts = JSON.stringify({ ...this.style, fit: number > 99 });
+    const opts = JSON.stringify({
+      ...this.style,
+      fit: this.style.fit || number > 99,
+    });
     return this.win.webContents.executeJavaScript(
       `window.drawBadge = function ${this.drawBadge}; window.drawBadge(${number}, ${opts});`
     );
