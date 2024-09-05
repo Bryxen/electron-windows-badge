@@ -11,8 +11,8 @@ module.exports = class BadgeGenerator {
       borderWidth: 0,
       borderColor: "transparent",
       shadowBlur: 0,
-      shadowOffestX: 0,
-      shadowOffestY: 0,
+      shadowOffsetX: 0,
+      shadowOffsetY: 0,
       shadowColor: "transparent",
     };
     this.win = win;
@@ -29,8 +29,10 @@ module.exports = class BadgeGenerator {
   drawBadge(number, style) {
     var radius = style.radius;
     var img = document.createElement("canvas");
-    img.width = Math.ceil(radius * 2);
-    img.height = Math.ceil(radius * 2);
+    img.width = Math.ceil(radius * 2 + style.borderWidth + style.shadowOffsetX);
+    img.height = Math.ceil(
+      radius * 2 + style.borderWidth + style.shadowOffsetY
+    );
     img.ctx = img.getContext("2d");
     img.radius = radius;
     img.number = number;
@@ -47,18 +49,22 @@ module.exports = class BadgeGenerator {
 
     img.draw = function () {
       var fontScale, fontWidth, fontSize, number;
-      this.width = Math.ceil(this.radius * 2);
-      this.height = Math.ceil(this.radius * 2);
       this.ctx.clearRect(0, 0, this.width, this.height);
       this.ctx.fillStyle = this.displayStyle.color;
       this.ctx.lineWidth = style.borderWidth;
       this.ctx.strokeStyle = style.borderColor;
       this.ctx.shadowColor = style.shadowColor;
       this.ctx.shadowBlur = style.shadowBlur;
-      this.ctx.shadowOffsetX = style.shadowOffestX;
-      this.ctx.shadowOffsetY = style.shadowOffestY;
+      this.ctx.shadowOffsetX = style.shadowOffsetX;
+      this.ctx.shadowOffsetY = style.shadowoffsetY;
       this.ctx.beginPath();
-      this.ctx.arc(radius, radius, radius, 0, Math.PI * 2);
+      this.ctx.arc(
+        radius + style.borderWidth / 2,
+        radius + style.borderWidth / 2,
+        radius,
+        0,
+        Math.PI * 2
+      );
       this.ctx.fill();
       this.ctx.stroke();
       this.ctx.font = this.displayStyle.font;
@@ -67,29 +73,14 @@ module.exports = class BadgeGenerator {
       this.ctx.fillStyle = this.displayStyle.fontColor;
       number = this.number.toFixed(this.displayStyle.decimals);
       fontSize = Number(/[0-9\.]+/.exec(this.ctx.font)[0]);
-
       if (!this.displayStyle.fit || isNaN(fontSize)) {
-        this.ctx.fillText(number, radius, radius);
+        this.ctx.fillText(
+          number,
+          radius + style.borderWidth / 2,
+          radius + style.borderWidth / 2
+        );
       } else {
         fontWidth = this.ctx.measureText(number).width;
-        fontScale =
-          (Math.cos(Math.atan(fontSize / fontWidth)) * this.radius * 2) /
-          fontWidth;
-        this.ctx.setTransform(
-          fontScale,
-          0,
-          0,
-          fontScale,
-          this.radius,
-          this.radius
-        );
-        this.ctx.fillText(number, 0, 0);
-        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-      }
-
-      if (!this.displayStyle.fit || isNaN(fontSize)) {
-        this.ctx.fillText(number, radius, radius);
-      } else {
         fontScale =
           (Math.cos(Math.atan(fontSize / fontWidth)) * this.radius * 2) /
           fontWidth;
