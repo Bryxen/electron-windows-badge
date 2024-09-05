@@ -20,7 +20,7 @@ module.exports = class BadgeGenerator {
   }
 
   generate(number) {
-    const opts = JSON.stringify(this.style);
+    const opts = JSON.stringify({ ...this.style, fit: number > 99 });
     return this.win.webContents.executeJavaScript(
       `window.drawBadge = function ${this.drawBadge}; window.drawBadge(${number}, ${opts});`
     );
@@ -29,9 +29,11 @@ module.exports = class BadgeGenerator {
   drawBadge(number, style) {
     var radius = style.radius;
     var img = document.createElement("canvas");
-    img.width = Math.ceil(radius * 2 + style.borderWidth + style.shadowOffsetX);
+    img.width = Math.ceil(
+      radius * 2 + style.borderWidth + style.shadowOffsetX + style.shadowBlur
+    );
     img.height = Math.ceil(
-      radius * 2 + style.borderWidth + style.shadowOffsetY
+      radius * 2 + style.borderWidth + style.shadowOffsetY + style.shadowBlur
     );
     img.ctx = img.getContext("2d");
     img.radius = radius;
