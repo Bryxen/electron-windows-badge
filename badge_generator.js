@@ -43,10 +43,10 @@ module.exports = class BadgeGenerator {
     img.number = number;
     img.displayStyle = style;
 
-    style.color = style.color ? style.color : "red";
-    style.font = style.font ? style.font : "18px arial";
-    style.fontColor = style.fontColor ? style.fontColor : "white";
-    style.fit = style.fit === undefined ? true : style.fit;
+    style.color = style.color ?? "red";
+    style.font = style.font ?? "18px arial";
+    style.fontColor = style.fontColor ?? "white";
+    style.fit = style.fit ?? true;
     style.decimals =
       style.decimals === undefined || isNaN(style.decimals)
         ? 0
@@ -56,16 +56,16 @@ module.exports = class BadgeGenerator {
       var fontScale, fontWidth, fontSize, number;
       this.ctx.clearRect(0, 0, this.width, this.height);
       this.ctx.fillStyle = this.displayStyle.color;
-      this.ctx.lineWidth = style.borderWidth;
-      this.ctx.strokeStyle = style.borderColor;
-      this.ctx.shadowColor = style.shadowColor;
-      this.ctx.shadowBlur = style.shadowBlur;
-      this.ctx.shadowOffsetX = style.shadowOffsetX;
-      this.ctx.shadowOffsetY = style.shadowoffsetY;
+      this.ctx.lineWidth = this.displayStyle.borderWidth;
+      this.ctx.strokeStyle = this.displayStyle.borderColor;
+      this.ctx.shadowColor = this.displayStyle.shadowColor;
+      this.ctx.shadowBlur = this.displayStyle.shadowBlur;
+      this.ctx.shadowOffsetX = this.displayStyle.shadowOffsetX;
+      this.ctx.shadowOffsetY = this.displayStyle.shadowoffsetY;
       this.ctx.beginPath();
       this.ctx.arc(
-        radius + style.borderWidth / 2,
-        radius + style.borderWidth / 2,
+        radius + this.displayStyle.borderWidth / 2,
+        radius + this.displayStyle.borderWidth / 2,
         radius,
         0,
         Math.PI * 2
@@ -81,8 +81,8 @@ module.exports = class BadgeGenerator {
       if (!this.displayStyle.fit || isNaN(fontSize)) {
         this.ctx.fillText(
           number,
-          radius + style.borderWidth / 2,
-          radius + style.borderWidth / 2
+          radius + this.displayStyle.borderWidth / 2,
+          radius + this.displayStyle.borderWidth / 2
         );
       } else {
         fontWidth = this.ctx.measureText(number).width;
