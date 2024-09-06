@@ -41,7 +41,6 @@ module.exports = class BadgeGenerator {
     img.ctx = img.getContext("2d");
     img.radius = radius;
     img.number = number;
-    img.displayStyle = style;
 
     style.color = style.color ?? "red";
     style.font = style.font ?? "18px arial";
@@ -51,6 +50,8 @@ module.exports = class BadgeGenerator {
       style.decimals === undefined || isNaN(style.decimals)
         ? 0
         : style.decimals;
+
+    img.displayStyle = style;
 
     img.draw = function () {
       var fontScale, fontWidth, fontSize, number;
